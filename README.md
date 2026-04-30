@@ -1,114 +1,334 @@
-# Automatic-Pill-Remainder-System
+# Automatic Pill Reminder System
 
-Automatic Pill Reminder System
-Overview
-This project is an Automatic Pill Reminder System built using an Arduino Uno, DS1307/DS3231 Real Time Clock (RTC) module, 16x2 LCD display, a buzzer, and three push buttons. It helps users to timely remember taking their pills by providing an audible alarm and a visual reminder on the LCD at a preset daily time. The system allows easy setup of the daily pill reminder time through button inputs.
+An embedded system project built using **Arduino Uno** that helps users remember to take medication on time using real-time clock scheduling, LCD notifications, and an audible buzzer alert.
 
-Features
-Real-time clock based accurate timekeeping using DS1307 or DS3231 RTC module.
+---
 
-Time and pill reminder displayed on a 16x2 LCD screen.
+## Overview
 
-Three push buttons to interact with the system:
+The **Automatic Pill Reminder System** is designed to provide timely medication reminders using a preset daily alarm.
 
-Set the hour for the reminder time.
+The system uses a **Real-Time Clock (RTC)** module for accurate timekeeping and alerts the user through:
 
-Set the minute for the reminder time.
+* **16x2 LCD visual notification**
+* **Buzzer alarm alert**
 
-Confirm and save the reminder time, also stop the alarm.
+Users can configure the reminder time using push buttons, making the system simple, reliable, and user-friendly.
 
-Buzzer alarm that sounds for 10 seconds at the reminder time or until acknowledged.
+---
 
-Simple user interface to set daily pill reminder time.
+## Features
 
-Low power components and compact design for easy implementation.
+* Real-time accurate clock using **DS1307 / DS3231 RTC**
+* Daily pill reminder scheduling
+* 16x2 LCD display for time and reminder status
+* Audible buzzer alert
+* Easy reminder time configuration using push buttons
+* Alarm acknowledgment option
+* Repeats automatically every day
+* Compact and low-power embedded design
 
-Hardware Components
-Arduino Uno microcontroller board
+---
 
-DS1307 or DS3231 RTC Module (for timekeeping)
+## Hardware Components
 
-16x2 I2C LCD Display (address 0x27 commonly)
+| Component                  | Quantity    |
+| -------------------------- | ----------- |
+| Arduino Uno                | 1           |
+| DS1307 / DS3231 RTC Module | 1           |
+| 16x2 I2C LCD Display       | 1           |
+| Piezo Buzzer               | 1           |
+| Push Buttons               | 3           |
+| Breadboard / PCB           | 1           |
+| Jumper Wires               | As required |
 
-Piezo Buzzer
+---
 
-3 Push Buttons
+## Pin Configuration
 
-Connecting wires and breadboard or PCB
+### Push Buttons
 
-Wiring Summary
-RTC Module connected via I2C pins (SDA to A4, SCL to A5 on Arduino Uno).
+| Function             | Arduino Pin |
+| -------------------- | ----------- |
+| Set Hour             | D2          |
+| Set Minute           | D3          |
+| Confirm / Stop Alarm | D4          |
 
-LCD connected via I2C (SDA to A4, SCL to A5).
+### Output Device
 
-Push Buttons connected to digital pins 2 (Set Hour), 3 (Set Minute), and 4 (Confirm) with internal pull-up resistors.
+| Device | Arduino Pin |
+| ------ | ----------- |
+| Buzzer | D9          |
 
-Buzzer connected to digital pin 9.
+### I2C Connections
 
-Common ground shared between components and Arduino.
+| Module | Arduino Uno |
+| ------ | ----------- |
+| SDA    | A4          |
+| SCL    | A5          |
 
-Usage Instructions
-Power the Arduino with the RTC, LCD, buzzer, and buttons connected.
+---
 
-The LCD will display the current time and prompt to set the pill reminder.
+## Working Principle
 
-Press the Set Hour button repeatedly to increment the reminder hour.
+### 1. System Initialization
 
-Press the Set Minute button to switch to minute setting mode, then press repeatedly to increment the reminder minutes.
+On power-up:
 
-Press the Confirm button to save the reminder time.
+* LCD initializes
+* RTC status is checked
+* Default reminder time is loaded
+* Welcome message is displayed
 
-When the set time matches the RTC time, the buzzer will beep for 10 seconds.
+---
 
-Press the Confirm button during the alarm to stop the buzzer.
+### 2. Reminder Time Setup
 
-The reminder will repeat daily at the set time.
+The user sets the daily reminder using buttons:
 
-Code Structure
-setup(): Initializes the LCD, RTC, buttons, and buzzer. Checks if the RTC is running correctly.
+* **Set Hour Button** → Increments reminder hour
+* **Set Minute Button** → Increments reminder minute
+* **Confirm Button** → Saves reminder time
 
-loop(): Continuously updates the current time display, processes button inputs to set reminder time, triggers alarm at the set time.
+---
 
-Helper functions for printing numbers on the LCD and buzzing alarm.
+### 3. Time Monitoring
 
-Libraries Required
-Wire (built-in Arduino library for I2C communication)
+The RTC continuously provides the current time.
 
-RTClib by Adafruit (for DS1307/DS3231 RTC)
+The LCD displays:
 
-LiquidCrystal_I2C (for 16x2 LCD display with I2C interface)
+**Line 1:** Current Time
+**Line 2:** Reminder Time / Setup Prompt
 
-Installation
-Install the required libraries via Arduino IDE Library Manager:
+---
 
-Search for and install RTClib
+### 4. Alarm Trigger
 
-Search for and install LiquidCrystal_I2C (make sure you have a compatible version)
+When current RTC time matches the preset reminder time:
 
-Connect the hardware components as per wiring summary.
+* Buzzer starts beeping
+* LCD continues displaying reminder status
 
-Open the Arduino IDE and load the sketch_sep14a.ino code.
+---
 
-Upload the code to the Arduino Uno.
+### 5. Alarm Stop
 
-Open the Serial Monitor (optional) for debugging messages.
+The alarm will:
 
-Troubleshooting
-RTC not working: Ensure RTC module is connected correctly, check battery on the RTC, and confirm library support.
+* Stop automatically after **10 seconds**, or
+* Stop immediately when the **Confirm button** is pressed
 
-LCD not displaying properly: Check I2C address of your LCD (0x27 is common but may differ), adjust LiquidCrystal_I2C lcd(0x27,16,2); accordingly.
+---
 
-Buttons not responding: Confirm buttons are wired correctly with pull-up resistors or use Arduino internal pull-ups as in the code.
+## Usage Instructions
 
-Buzzer not buzzing: Check buzzer wiring and test with direct 5V power.
+### Step 1
 
-Future Improvements
-Add multiple reminder times in one day.
+Power the system.
 
-Use an RTC alarm interrupt for more precise buzzer control.
+---
 
-Add LCD menu navigation for easier setting without pressing multiple buttons.
+### Step 2
 
-Integrate wireless notifications (e.g., Bluetooth or Wi-Fi).
+Set the reminder hour using the **Set Hour** button.
 
-Use EEPROM for saving reminder time permanently.
+---
+
+### Step 3
+
+Set the reminder minute using the **Set Minute** button.
+
+---
+
+### Step 4
+
+Press **Confirm** to save the reminder.
+
+---
+
+### Step 5
+
+Wait for the scheduled reminder time.
+
+---
+
+### Step 6
+
+Press **Confirm** to stop the buzzer when the alarm sounds.
+
+---
+
+## Software Requirements
+
+* **Arduino IDE**
+* Required Libraries:
+
+### Install via Library Manager
+
+#### 1. RTClib
+
+Used for RTC communication
+
+#### 2. LiquidCrystal_I2C
+
+Used for LCD display
+
+#### 3. Wire
+
+Built-in Arduino I2C library
+
+---
+
+## Code Structure
+
+### `setup()`
+
+Initializes:
+
+* LCD
+* RTC
+* Buttons
+* Buzzer
+
+---
+
+### `loop()`
+
+Handles:
+
+* Time display updates
+* Button input detection
+* Alarm checking
+* Reminder activation
+
+---
+
+### Helper Functions
+
+#### `printTwoDigits()`
+
+Formats time display
+
+#### `buzzAlarm()`
+
+Controls buzzer alert behavior
+
+---
+
+## Installation
+
+### Clone the repository
+
+```bash
+git clone <your-repository-link>
+```
+
+---
+
+### Open Arduino IDE
+
+Load:
+
+```cpp
+Automatic_Pill_Reminder.ino
+```
+
+---
+
+### Connect Hardware
+
+Wire components as per the pin configuration table.
+
+---
+
+### Upload Code
+
+Select:
+
+* **Board:** Arduino Uno
+* Correct COM Port
+
+Then click **Upload**
+
+---
+
+## Troubleshooting
+
+### RTC Not Working
+
+* Verify I2C wiring
+* Check RTC battery
+* Confirm RTC library installation
+
+---
+
+### LCD Not Displaying
+
+Check LCD I2C address.
+
+Common addresses:
+
+* `0x27`
+* `0x3F`
+
+Modify:
+
+```cpp
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+```
+
+---
+
+### Buttons Not Responding
+
+* Check wiring
+* Ensure internal pull-up configuration is enabled
+
+---
+
+### Buzzer Not Working
+
+* Verify pin connection
+* Test buzzer independently
+
+---
+
+## Future Improvements
+
+* Multiple daily reminders
+* EEPROM storage for reminder persistence
+* RTC interrupt-based alarm triggering
+* Bluetooth / Wi-Fi notifications
+* Menu-driven LCD interface
+* Battery backup support
+* Mobile app integration
+
+---
+
+## Applications
+
+* Elderly medication assistance
+* Hospital patient care
+* Personal healthcare reminder
+* Medicine scheduling support
+
+---
+
+## Technologies Used
+
+* Arduino Embedded C++
+* I2C Communication
+* Real-Time Clock Scheduling
+* LCD Interface
+* Digital Input/Output Control
+
+---
+
+## Author
+
+**Nithin Kumar**
+
+Embedded Systems Engineer
+Focused on Embedded Systems, Microcontroller Programming, and Real-Time Applications
+
