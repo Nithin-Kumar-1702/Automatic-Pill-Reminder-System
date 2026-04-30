@@ -221,7 +221,8 @@ Controls buzzer alert behavior
 ### Clone the repository
 
 ```bash
-git clone <your-repository-link>
+
+git clone https://github.com/Nithin-Kumar-1702/Automatic-Pill-Reminder-System.git
 ```
 
 ---
